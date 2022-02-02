@@ -32,7 +32,15 @@ from nltk.corpus import stopwords
 #Import the survey file
 data_survey = pd.read_excel('data survey.xlsx')
 data_survey.head()
-df = data_survey[['Have you got insomnia problems?','How many days you think you are able to stay without the smartphone?','How do you think COVID19 has affected your social life?','Have you ever realized to use your smartphone for too many hours?', 'If you ever realized to use your smartphone for too many hours, how many of them?', 'Have you ever looked at your phone to find out something (eg. the time) but got distracted and looked at something else forgetting the reason why you had looked at the phone?', 'Have you ever thought about deleting your social account?','If you ever though about deleting your social account, have you ever actually done?','How would you describe yourself? (please, give three words separate by a comma)','What is your zodiac sign?','What would you say is your best quality?','What do you do when you’re going through a personal crisis?','Do you consider yourself a stressed person? Answer from 1 to 7 (1 minimum level, 7 maximum level)','Are you anxious?']]
+
+df = data_survey[['Have you got insomnia problems?','How many days you think you are able to stay without the smartphone?',
+'How do you think COVID19 has affected your social life?','Have you ever realized to use your smartphone for too many hours?',
+'If you ever realized to use your smartphone for too many hours, how many of them?','Have you ever looked at your phone to find out something (eg. the time) but got distracted and looked at something else forgetting the reason why you had looked at the phone?',
+'Have you ever thought about deleting your social account?','If you ever though about deleting your social account, have you ever actually done?',
+'How would you describe yourself? (please, give three words separate by a comma)','What is your zodiac sign?',
+'What would you say is your best quality?','What do you do when you’re going through a personal crisis?',
+'Do you consider yourself a stressed person? Answer from 1 to 7 (1 minimum level, 7 maximum level)','Are you anxious?']]
+
 df.rename(columns={'Have you got insomnia problems?':'Insomnia','How many days you think you are able to stay without the smartphone?':'out_smart',
 'How do you think COVID19 has affected your social life?':'Covid','Have you ever realized to use your smartphone for too many hours?':'hours_smart',
 'If you ever realized to use your smartphone for too many hours, how many of them?':'hours_many',
@@ -43,13 +51,6 @@ df.rename(columns={'Have you got insomnia problems?':'Insomnia','How many days y
 'What do you do when you’re going through a personal crisis?':'Crisis',
 'Do you consider yourself a stressed person? Answer from 1 to 7 (1 minimum level, 7 maximum level)':'stressed',
 'Are you anxious?':'Y'},inplace=True)
-
-df_added = pd.read_excel
-
-frames = [df,]
-
-result = pd.concat(frames)
-
 
 #PRE PROCESSING 
 
@@ -109,8 +110,7 @@ df.drop(['Y','No'],axis=1,inplace=True)
 df=df.rename(columns={'Yes':'Y', 'Insomnia_Yes': 'insomnia', 'hours_smart_Yes':'hours_smart',
 'dis_smart_Yes': 'dis_smart', 'no_social_Yes':'no_social','del_social_Yes':'del_social'})
 
-
-
+df.to_excel('Data_preprocessed.xlsx')
 
 #DATA VISUALIZATION 
 
@@ -485,6 +485,8 @@ plt.axis("off")
 plt.show()
 
 #Correlation matrix
+df = pd.read_excel('Data_preprocessed.xlsx')
+df.drop('Unnamed: 0',axis=1,inplace=True)
 corr = df.corr()
 plt.title('Correlation matrix')
 cormap = sns.heatmap(corr, annot=True)
@@ -495,9 +497,21 @@ plt.show()
 
 # MODEL DEVELOPMENT 
 
-df = pd.read_excel('ModelDevelopment.xlsx')
+df = pd.read_excel('Data_preprocessed.xlsx')
+df.drop('Unnamed: 0',axis=1,inplace=True)
+df.drop(['Covid','yourself','Zodiac','Quality','Crisis'], axis = 1, inplace = True)
+df.head()
 
-df.drop(['Unnamed: 0'],axis = 1, inplace = True)
+df['out_smart']
+for i in df['out_smart']:
+    if i == 'Low':
+        df['out_smart'].replace(i,1,inplace=True)
+    elif i == 'Medium':
+        df['out_smart'].replace(i,2,inplace=True)
+    elif i == 'High':
+        df['out_smart'].replace(i,3,inplace=True)
+df['out_smart']
+
 df.drop(['dis_smart','hours_smart'], axis=1, inplace=True)
 
 #split in test and train
