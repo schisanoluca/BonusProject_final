@@ -572,6 +572,13 @@ plt.show()
 model = sm.Logit(y,x).fit()
 par = model.params 
 
+yhat = model.predict(x)
+pred = prediction_train = list(map(round, yhat))
+cm = confusion_matrix(y, pred)
+print('Actual values:', list(y_test.values))
+print('Predictions:', prediction_test)
+print ("Confusion Matrix: \n", cm)
+print('Accuracy = ', accuracy_score(y, pred))
 
 a = False
 
