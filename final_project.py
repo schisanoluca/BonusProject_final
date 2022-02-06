@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Feb  1 15:34:11 2022
-
-@author: martinamanno
-"""
-
 import pandas as pd
 import numpy as np
 import plotly.express as px
