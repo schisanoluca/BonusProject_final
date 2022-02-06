@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Feb  1 15:34:11 2022
+
+@author: martinamanno
+"""
+
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -128,6 +136,22 @@ fig = px.histogram(df,x="out_smart",title="OutSmart",
 nbins=4,text_auto=True,category_orders=dict(out_smart=["Low", "Medium", "High"]))
 fig.show()
 
+#hours_many
+plt.title('Hours on smartphone')
+plt.hist(df['hours_many'], rwidth=0.8)
+plt.xlabel('hours of smartphone usage per days')
+plt.ylabel('number of people')
+plt.xticks(range(0,11))
+plt.show()
+
+#Hours_smart
+plt.title('Realizing too many hours on smartphone')
+plt.hist(df['hours_smart'], rwidth=0.8)
+plt.xlabel('0 = No, 1= Yes')
+plt.ylabel('number of people')
+plt.xticks(range(0,2))
+plt.show()
+
 #no_social
 plt.title('Have you ever thought about deleting your social account?')
 plt.hist(df['no_social'], rwidth=0.8)
@@ -144,22 +168,6 @@ plt.xlabel('0 = No, 1 = Yes')
 plt.ylabel('number of people')
 plt.yticks(np.arange(0,22,step=3))
 plt.xticks(np.arange(0,1,step=1))
-plt.show()
-
-#hours_many
-plt.title('Hours on smartphone')
-plt.hist(df['hours_many'], rwidth=0.8)
-plt.xlabel('hours of smartphone usage per days')
-plt.ylabel('number of people')
-plt.xticks(range(0,11))
-plt.show()
-
-#Hours_smart
-plt.title('Realizing too many hours on smartphone')
-plt.hist(df['hours_smart'], rwidth=0.8)
-plt.xlabel('0 = No, 1= Yes')
-plt.ylabel('number of people')
-plt.xticks(range(0,2))
 plt.show()
 
 #Dis_smart
@@ -360,13 +368,12 @@ def create_waffle_chart(categories, values, height, width, colormap, value_sign=
     )
     plt.show()
 
-width = 5 # width of chart
+width = 7 # width of chart
 height = 3 # height of chart
 categories = df_group.index.values # categories
 values = df_group # correponding values of categories
 colormap = plt.cm.coolwarm # color map class
 create_waffle_chart(categories, values, height, width, colormap)
-# di 15 persone che sono ansiose (1 high 12 Low e 2 Medium)
 
 #Italy map
 df_map = pd.read_excel('data survey.xlsx')  
